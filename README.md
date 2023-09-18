@@ -5,9 +5,6 @@ Kuriamos sistemos tikslas – padaryti restoranų staliukų rezervacijos proces�
 
 Įprastinis sistemos veikimo modelis būtų toks, jog užsiregistravęs sistemoje naudotojas galėtų matyti visų sistemos restoranų sąrašą ir, pasirinkęs jį dominantį restoraną, matytų jo informaciją, tokią kaip nuotrauką, pavadinimą, darbo laiką, internetinės svetainės adresą. Tuomet, paspaudęs mygtuką staliuko rezervacijai ir pasirinkęs norimą datą bei laiką, įvedęs žmonių skaičių, naudotojas galėtų pateikti prašymą rezervuoti staliuką.
 ### Funkciniai reikalavimai
-Neregistruotas naudotojas galės:
-1. Registruotis.
-
 Registruotas naudotojas, restorano valdytojas, administratorius galės:
 1. Prisijungti;
 2. Atsijungti;
@@ -35,6 +32,7 @@ Administratorius galės:
 ## Pasirinktų technologijų aprašymas
 Vartotojo sąsajai naudosiu *JavaScript* programavimo biblioteką *React*, serverinei daliai *C#* ir karkasą *ASP.NET Core*. Duomenų bazei naudosiu *MySQL* duomenų bazių valdymo sistemą.
 ## Sistemos architektūra
-Sistemos architektūra bus tokia, jog klientas per HTTP protokolą komunikuos su klientine dalimi, kuri bus atsakingą už naudotojo sąsajos atvaizdavimą. Prireikus tam tikrų duomenų, ar funkcijų, klientinė dalis per HTTP protokolą komunikuos su aplikacijų programavimo sąsaja (angl. application programming interface, API), kuri, esant poreikiui, kreipsis į duomenų bazę per TCP/IP protokolą.
+Sistemos architektūra bus tokia, jog klientas per HTTPS protokolą komunikuos su klientine dalimi, kuri bus atsakingą už naudotojo sąsajos atvaizdavimą. Prireikus tam tikrų duomenų, ar funkcijų, klientas per HTTPS protokolą komunikuos su aplikacijų programavimo sąsaja (angl. application programming interface, API), kuri, esant poreikiui, kreipsis į duomenų bazę per TCP/IP protokolą.
 
-![deployment_diagram](https://github.com/dominykasvenckus/DineClick/assets/124305272/d704c70d-bbee-44e5-b8ec-795be3b7e5de)
+![deployment_diagram](https://github.com/dominykasvenckus/DineClick/assets/124305272/36fb0338-3023-43ad-b275-308320bc091a)
+
