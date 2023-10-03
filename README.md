@@ -30,9 +30,10 @@ Administratorius galės:
 3. Šalinti naudotoją;
 4. Blokuoti naudotoją.
 ## Pasirinktų technologijų aprašymas
-Vartotojo sąsajai naudosiu *JavaScript* programavimo biblioteką *React*, serverinei daliai *C#* ir karkasą *ASP.NET Core*. Duomenų bazei naudosiu *MySQL* duomenų bazių valdymo sistemą.
+Vartotojo sąsajai naudosiu *JavaScript* programavimo biblioteką *React*, serverinei daliai *C#* ir karkasą *ASP.NET Core*. Duomenų bazei naudosiu *SQL Server* duomenų bazių valdymo sistemą.
 ## Sistemos architektūra
 Sistemos architektūra bus tokia, jog klientas per HTTPS protokolą komunikuos su klientine dalimi, kuri bus atsakingą už naudotojo sąsajos atvaizdavimą. Prireikus tam tikrų duomenų, ar funkcijų, klientas per HTTPS protokolą komunikuos su aplikacijų programavimo sąsaja (angl. application programming interface, API), kuri, esant poreikiui, kreipsis į duomenų bazę per TCP/IP protokolą.
 
-![deployment_diagram](https://github.com/dominykasvenckus/DineClick/assets/124305272/36fb0338-3023-43ad-b275-308320bc091a)
+![deployment_diagram](https://github.com/dominykasvenckus/DineClick/assets/124305272/fabf4fee-6946-470e-a37a-b5724afe82bf)
+
 
