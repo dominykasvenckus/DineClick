@@ -42,7 +42,7 @@ app.MapGet("api/addresses/{addressId:int}", async (ApplicationDbContext db, int 
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     return Results.Ok(address);
 }).WithName("GetAddress")
@@ -55,7 +55,7 @@ app.MapPost("api/addresses", async (ApplicationDbContext db, IMapper mapper, IVa
     var validationResult = await validator.ValidateAsync(addressDto);
     if (!validationResult.IsValid)
     {
-        return Results.UnprocessableEntity(validationResult.Errors.Select(e => $"Property: {e.PropertyName}, Error: {e.ErrorMessage}"));
+        return Results.UnprocessableEntity(validationResult.Errors.Select(e => $"Error: {e.ErrorMessage}"));
     }
     var address = mapper.Map<Address>(addressDto);
     db.Addresses.Add(address);
@@ -72,12 +72,12 @@ app.MapPut("api/addresses/{addressId:int}", async (ApplicationDbContext db, IMap
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var validationResult = await validator.ValidateAsync(addressDto);
     if (!validationResult.IsValid)
     {
-        return Results.UnprocessableEntity(validationResult.Errors.Select(e => e.ErrorMessage));
+        return Results.UnprocessableEntity(validationResult.Errors.Select(e => $"Error: {e.ErrorMessage}"));
     }
     mapper.Map<AddressDto, Address>(addressDto, address);
     db.Addresses.Update(address);
@@ -95,7 +95,7 @@ app.MapDelete("api/addresses/{addressId:int}", async (ApplicationDbContext db, i
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     db.Addresses.Remove(address);
     await db.SaveChangesAsync();
@@ -111,7 +111,7 @@ app.MapGet("api/addresses/{addressId:int}/restaurants", async (ApplicationDbCont
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var restaurants = await db.Restaurants
         .Include(r => r.Address)
@@ -128,14 +128,14 @@ app.MapGet("api/addresses/{addressId:int}/restaurants/{restaurantId:int}", async
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var restaurant = await db.Restaurants
         .Include(r => r.Address)
         .FirstOrDefaultAsync(r => r.Address.AddressId == addressId && r.RestaurantId == restaurantId);
     if (restaurant == null)
     {
-        return Results.NotFound("Error: the requested restaurant was not found.");
+        return Results.NotFound("Error: The requested restaurant was not found.");
     }
     return Results.Ok(restaurant);
 }).WithName("GetRestaurantByAddress")
@@ -148,12 +148,12 @@ app.MapPost("api/addresses/{addressId:int}/restaurants", async (ApplicationDbCon
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var validationResult = await validator.ValidateAsync(restaurantDto);
     if (!validationResult.IsValid)
     {
-        return Results.UnprocessableEntity(validationResult.Errors.Select(e => e.ErrorMessage));
+        return Results.UnprocessableEntity(validationResult.Errors.Select(e => $"Error: {e.ErrorMessage}"));
     }
     var restaurant = mapper.Map<Restaurant>(restaurantDto, opt => opt.Items["Address"] = address);
     db.Restaurants.Add(restaurant);
@@ -171,19 +171,19 @@ app.MapPut("api/addresses/{addressId:int}/restaurants/{restaurantId:int}", async
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var restaurant = await db.Restaurants
         .Include(r => r.Address)
         .FirstOrDefaultAsync(r => r.Address.AddressId == addressId && r.RestaurantId == restaurantId);
     if (restaurant == null)
     {
-        return Results.NotFound("Error: the requested restaurant was not found.");
+        return Results.NotFound("Error: The requested restaurant was not found.");
     }
     var validationResult = await validator.ValidateAsync(restaurantDto);
     if (!validationResult.IsValid)
     {
-        return Results.UnprocessableEntity(validationResult.Errors.Select(e => e.ErrorMessage));
+        return Results.UnprocessableEntity(validationResult.Errors.Select(e => $"Error: {e.ErrorMessage}"));
     }
     mapper.Map<RestaurantDto, Restaurant>(restaurantDto, restaurant);
     db.Restaurants.Update(restaurant);
@@ -201,14 +201,14 @@ app.MapDelete("api/addresses/{addressId:int}/restaurants/{restaurantId:int}", as
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var restaurant = await db.Restaurants
         .Include(r => r.Address)
         .FirstOrDefaultAsync(r => r.Address.AddressId == addressId && r.RestaurantId == restaurantId);
     if (restaurant == null)
     {
-        return Results.NotFound("Error: the requested restaurant was not found.");
+        return Results.NotFound("Error: The requested restaurant was not found.");
     }
     db.Restaurants.Remove(restaurant);
     await db.SaveChangesAsync();
@@ -224,14 +224,14 @@ app.MapGet("api/addresses/{addressId:int}/restaurants/{restaurantId:int}/reserva
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var restaurant = await db.Restaurants
         .Include(r => r.Address)
         .FirstOrDefaultAsync(r => r.Address.AddressId == addressId && r.RestaurantId == restaurantId);
     if (restaurant == null)
     {
-        return Results.NotFound("Error: the requested restaurant was not found.");
+        return Results.NotFound("Error: The requested restaurant was not found.");
     }
     var reservations = await db.Reservations
         .Include(r => r.Restaurant)
@@ -249,14 +249,14 @@ app.MapGet("api/addresses/{addressId:int}/restaurants/{restaurantId:int}/reserva
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var restaurant = await db.Restaurants
         .Include(r => r.Address)
         .FirstOrDefaultAsync(r => r.Address.AddressId == addressId && r.RestaurantId == restaurantId);
     if (restaurant == null)
     {
-        return Results.NotFound("Error: the requested restaurant was not found.");
+        return Results.NotFound("Error: The requested restaurant was not found.");
     }
     var reservation = await db.Reservations
         .Include(r => r.Restaurant)
@@ -264,7 +264,7 @@ app.MapGet("api/addresses/{addressId:int}/restaurants/{restaurantId:int}/reserva
         .FirstOrDefaultAsync(r => r.Restaurant.RestaurantId == restaurant.RestaurantId && r.ReservationId == reservationId);
     if (reservation == null)
     {
-        return Results.NotFound("Error: the requested reservation was not found.");
+        return Results.NotFound("Error: The requested reservation was not found.");
     }
     return Results.Ok(reservation);
 }).WithName("GetReservationByAddressAndRestaurant")
@@ -277,19 +277,19 @@ app.MapPost("api/addresses/{addressId:int}/restaurants/{restaurantId:int}/reserv
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var restaurant = await db.Restaurants
         .Include(r => r.Address)
         .FirstOrDefaultAsync(r => r.Address.AddressId == addressId && r.RestaurantId == restaurantId);
     if (restaurant == null)
     {
-        return Results.NotFound("Error: the requested restaurant was not found.");
+        return Results.NotFound("Error: The requested restaurant was not found.");
     }
     var validationResult = await validator.ValidateAsync(createReservationDto);
     if (!validationResult.IsValid)
     {
-        return Results.UnprocessableEntity(validationResult.Errors.Select(e => e.ErrorMessage));
+        return Results.UnprocessableEntity(validationResult.Errors.Select(e => $"Error: {e.ErrorMessage}"));
     }
     var reservation = mapper.Map<Reservation>(createReservationDto, opt => opt.Items["Restaurant"] = restaurant);
     db.Reservations.Add(reservation);
@@ -306,14 +306,14 @@ app.MapPut("api/addresses/{addressId:int}/restaurants/{restaurantId:int}/reserva
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var restaurant = await db.Restaurants
         .Include(r => r.Address)
         .FirstOrDefaultAsync(r => r.Address.AddressId == addressId && r.RestaurantId == restaurantId);
     if (restaurant == null)
     {
-        return Results.NotFound("Error: the requested restaurant was not found.");
+        return Results.NotFound("Error: The requested restaurant was not found.");
     }
     var reservation = await db.Reservations
         .Include(r => r.Restaurant)
@@ -321,12 +321,12 @@ app.MapPut("api/addresses/{addressId:int}/restaurants/{restaurantId:int}/reserva
         .FirstOrDefaultAsync(r => r.Restaurant.RestaurantId == restaurant.RestaurantId && r.ReservationId == reservationId);
     if (reservation == null)
     {
-        return Results.NotFound("Error: the requested reservation was not found.");
+        return Results.NotFound("Error: The requested reservation was not found.");
     }
     var validationResult = await validator.ValidateAsync(updateReservationDto);
     if (!validationResult.IsValid)
     {
-        return Results.UnprocessableEntity(validationResult.Errors.Select(e => e.ErrorMessage));
+        return Results.UnprocessableEntity(validationResult.Errors.Select(e => $"Error: {e.ErrorMessage}"));
     }
     mapper.Map<UpdateReservationDto, Reservation>(updateReservationDto, reservation);
     db.Reservations.Update(reservation);
@@ -343,14 +343,14 @@ app.MapDelete("api/addresses/{addressId:int}/restaurants/{restaurantId:int}/rese
     var address = await db.Addresses.FindAsync(addressId);
     if (address == null)
     {
-        return Results.NotFound("Error: the requested address was not found.");
+        return Results.NotFound("Error: The requested address was not found.");
     }
     var restaurant = await db.Restaurants
         .Include(r => r.Address)
         .FirstOrDefaultAsync(r => r.Address.AddressId == addressId && r.RestaurantId == restaurantId);
     if (restaurant == null)
     {
-        return Results.NotFound("Error: the requested restaurant was not found.");
+        return Results.NotFound("Error: The requested restaurant was not found.");
     }
     var reservation = await db.Reservations
         .Include(r => r.Restaurant)
@@ -358,7 +358,7 @@ app.MapDelete("api/addresses/{addressId:int}/restaurants/{restaurantId:int}/rese
         .FirstOrDefaultAsync(r => r.Restaurant.RestaurantId == restaurant.RestaurantId && r.ReservationId == reservationId);
     if (reservation == null)
     {
-        return Results.NotFound("Error: the requested reservation was not found.");
+        return Results.NotFound("Error: The requested reservation was not found.");
     }
     db.Reservations.Remove(reservation);
     await db.SaveChangesAsync();
