@@ -9,7 +9,7 @@ namespace DineClickAPI.Validators
             RuleFor(r => r.Date).Must(BeValidDateAndNotInPast).WithMessage("'Date' must be a valid date and not be in the past.");
             RuleFor(r => r.Time).Must((dto, time) => BeValidTimeAndNotInPast(dto.Date, time)).WithMessage("'Time' must be a valid time and not be in the past.");
             RuleFor(r => r.PartySize).GreaterThan(0);
-            RuleFor(r => r.ReservationStatus).IsInEnum();
+            RuleFor(r => r.Status).IsInEnum();
         }
 
         private bool BeValidDateAndNotInPast(DateOnly date)

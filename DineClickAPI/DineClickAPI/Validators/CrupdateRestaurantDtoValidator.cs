@@ -2,9 +2,9 @@
 
 namespace DineClickAPI.Validators
 {
-    public class RestaurantDtoValidator : AbstractValidator<RestaurantDto>
+    public class CrupdateRestaurantDtoValidator : AbstractValidator<CrupdateRestaurantDto>
     {
-        public RestaurantDtoValidator()
+        public CrupdateRestaurantDtoValidator()
         {
             RuleFor(r => r.Name).NotEmpty().MaximumLength(30);
             RuleFor(r => r.Description).NotEmpty().MaximumLength(300);

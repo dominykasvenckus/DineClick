@@ -2,9 +2,9 @@
 
 namespace DineClickAPI.Validators
 {
-    public class AddressDtoValidator : AbstractValidator<AddressDto>
+    public class CrupdateAddressDtoValidator : AbstractValidator<CrupdateAddressDto>
     {
-        public AddressDtoValidator()
+        public CrupdateAddressDtoValidator()
         {
             RuleFor(a => a.Street).NotEmpty().MaximumLength(50);
             RuleFor(a => a.HouseNumber).NotEmpty().MaximumLength(20);

@@ -7,8 +7,8 @@ namespace DineClickAPI
     {
         public MapperConfig() 
         {
-            CreateMap<AddressDto, Address>();
-            CreateMap<RestaurantDto, Restaurant>()
+            CreateMap<CrupdateAddressDto, Address>();
+            CreateMap<CrupdateRestaurantDto, Restaurant>()
                 .ForMember(dest => dest.Address, opt => opt.MapFrom((src, dest, destMember, context) =>
                 {
                     if (context.TryGetItems(out var items) && items.ContainsKey("Address"))
@@ -17,10 +17,12 @@ namespace DineClickAPI
                     }
                     return destMember;
                 }));
+            CreateMap<Restaurant, RestaurantDto>();
             CreateMap<CreateReservationDto, Reservation>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => ReservationStatus.Pending))
                 .ForMember(dest => dest.Restaurant, opt => opt.MapFrom((src, dest, destMember, context) => context.Items["Restaurant"]));
             CreateMap<UpdateReservationDto, Reservation>();
+            CreateMap<Reservation, ReservationDto>();
         }
     }
 }
