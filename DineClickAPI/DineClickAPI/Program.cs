@@ -80,4 +80,12 @@ app.AddAuthEndpoints();
 app.UseAuthentication();
 app.UseAuthorization();
 
+using var scope = app.Services.CreateScope();
+
+var dbContext = scope.ServiceProvider.GetRequiredService<DbContext>();
+dbContext.Database.Migrate();
+
+var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+await dbSeeder.SeedAsync();
+
 app.Run();
