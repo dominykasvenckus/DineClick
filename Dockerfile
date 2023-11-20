@@ -1,6 +1,6 @@
 # https://hub.docker.com/_/microsoft-dotnet
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
-WORKDIR /source
+WORKDIR /DineClickAPI
 
 # copy csproj and restore as distinct layers
 COPY DineClickAPI/DineClickAPI/*.csproj .
