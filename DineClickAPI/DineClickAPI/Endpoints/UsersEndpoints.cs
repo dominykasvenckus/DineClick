@@ -17,11 +17,13 @@ public static class UsersEndpoints
         app.MapGet("api/v1/users", [Authorize(Roles = nameof(UserRole.Admin))] async (UserManager<User> userManager, IMapper mapper) =>
         {
             var users = await userManager.Users.ToListAsync();
-            var adminUserDtos = users.Select(async user =>
+            var adminUserDtos = new List<AdminUserDto>();
+            foreach (var user in users)
             {
                 var roles = await userManager.GetRolesAsync(user);
-                return mapper.Map<AdminUserDto>(user, opt => opt.Items["Role"] = Enum.Parse<UserRole>(roles[0]));
-            });
+                var adminUserDto = mapper.Map<AdminUserDto>(user, opt => opt.Items["Role"] = Enum.Parse<UserRole>(roles[0]));
+                adminUserDtos.Add(adminUserDto);
+            }
             return Results.Ok(adminUserDtos);
         }).WithName("GetUsers")
           .Produces<List<AdminUserDto>>(200)
