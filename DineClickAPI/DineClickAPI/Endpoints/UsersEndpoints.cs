@@ -95,6 +95,7 @@ public static class UsersEndpoints
           .Produces(401)
           .Produces(403)
           .Produces(404)
+          .Produces(422)
           .WithOpenApi();
 
 
@@ -159,6 +160,7 @@ public static class UsersEndpoints
           .Produces(401)
           .Produces(403)
           .Produces(404)
+          .Produces(422)
           .WithOpenApi();
     }
 }
