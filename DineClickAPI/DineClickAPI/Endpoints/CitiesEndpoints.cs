@@ -23,6 +23,7 @@ public static class CitiesEndpoints
                     .Include(r => r.RestaurantManager)
                     .Where(r => r.RestaurantManager.Id == httpContext.User.FindFirstValue(JwtRegisteredClaimNames.Sub))
                     .Select(r => r.City)
+                    .DistinctBy(c => c.CityId)
                     .ToListAsync();
             }
             else
