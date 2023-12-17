@@ -6,27 +6,19 @@ public class UpdateReservationDtoValidator : AbstractValidator<UpdateReservation
 {
     public UpdateReservationDtoValidator()
     {
-        RuleFor(r => r.Date).Must(BeValidDateAndNotInPast).WithMessage("'Date' must be a valid date and not be in the past.");
-        RuleFor(r => r.Time).Must((dto, time) => BeValidTimeAndNotInPast(dto.Date, time)).WithMessage("'Time' must be a valid time and not be in the past.");
+        RuleFor(r => r.Date).Must(BeValidDate).WithMessage("'Date' must be a valid date.");
+        RuleFor(r => r.Time).Must(BeValidTime).WithMessage("'Time' must be a valid time.");
         RuleFor(r => r.PartySize).GreaterThan(0);
         RuleFor(r => r.Status).IsInEnum();
     }
 
-    private bool BeValidDateAndNotInPast(DateOnly date)
+    private bool BeValidDate(DateOnly date)
     {
-        return !date.Equals(default) && date >= DateOnly.FromDateTime(DateTime.Today);
+        return !date.Equals(default);
     }
 
-    private bool BeValidTimeAndNotInPast(DateOnly date, TimeOnly time)
+    private bool BeValidTime(TimeOnly time)
     {
-        if (date > DateOnly.FromDateTime(DateTime.Today))
-        {
-            return !time.Equals(default);
-        }
-        else if (date == DateOnly.FromDateTime(DateTime.Today))
-        {
-            return !time.Equals(default) && time >= TimeOnly.FromDateTime(DateTime.Now);
-        }
-        return false;
+        return !time.Equals(default);
     }
 }

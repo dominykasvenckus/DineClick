@@ -13,27 +13,39 @@ public static class ReservationsEndpoints
 {
     public static void AddReservationsEndpoints(this WebApplication app)
     {
-        app.MapGet("api/v1/reservations", [Authorize(Roles = nameof(UserRole.RegisteredUser))] async (HttpContext httpContext, ApplicationDbContext db, IMapper mapper) =>
+        app.MapGet("api/v1/cities/{cityId:int}/reservations", [Authorize(Roles = nameof(UserRole.RegisteredUser))] async (HttpContext httpContext, ApplicationDbContext db, IMapper mapper, int cityId) =>
         {
+            var city = await db.Cities.FirstOrDefaultAsync(c => c.CityId == cityId);
+            if (city is null)
+            {
+                return Results.NotFound(new { error = "The requested city was not found." });
+            }
             var reservations = await db.Reservations
                 .Include(r => r.Restaurant)
                 .Include(r => r.ReservingUser)
-                .Where(r => r.ReservingUser.Id == httpContext.User.FindFirstValue(JwtRegisteredClaimNames.Sub))
+                .Where(r => r.ReservingUser.Id == httpContext.User.FindFirstValue(JwtRegisteredClaimNames.Sub) && 
+                            r.Restaurant.City.CityId == cityId)
                 .ToListAsync();
             var registeredUserReservationDtos = mapper.Map<List<RegisteredUserReservationDto>>(reservations);
             return Results.Ok(registeredUserReservationDtos);
-        }).WithName("GetReservations")
+        }).WithName("GetReservationsByCity")
           .Produces<List<RegisteredUserReservationDto>>(200)
           .Produces(401)
           .Produces(403)
+          .Produces(404)
           .WithOpenApi();
 
-        app.MapGet("api/v1/reservations/{reservationId:int}", [Authorize(Roles = nameof(UserRole.RegisteredUser))] async (HttpContext httpContext, ApplicationDbContext db, IMapper mapper, int reservationId) =>
+        app.MapGet("api/v1/cities/{cityId:int}/reservations/{reservationId:int}", [Authorize(Roles = nameof(UserRole.RegisteredUser))] async (HttpContext httpContext, ApplicationDbContext db, IMapper mapper, int cityId, int reservationId) =>
         {
+            var city = await db.Cities.FirstOrDefaultAsync(c => c.CityId == cityId);
+            if (city is null)
+            {
+                return Results.NotFound(new { error = "The requested city was not found." });
+            }
             var reservation = await db.Reservations
                 .Include(r => r.Restaurant)
                 .Include(r => r.ReservingUser)
-                .FirstOrDefaultAsync(r => r.ReservationId == reservationId);
+                .FirstOrDefaultAsync(r => r.Restaurant.City.CityId == cityId && r.ReservationId == reservationId);
             if (reservation is null)
             {
                 return Results.NotFound(new { error = "The requested reservation was not found." });
@@ -44,7 +56,7 @@ public static class ReservationsEndpoints
             }
             var registeredUserReservationDto = mapper.Map<RegisteredUserReservationDto>(reservation);
             return Results.Ok(registeredUserReservationDto);
-        }).WithName("GetReservation")
+        }).WithName("GetReservationByCity")
           .Produces<RegisteredUserReservationDto>(200)
           .Produces(401)
           .Produces(403)

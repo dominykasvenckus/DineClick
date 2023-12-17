@@ -16,20 +16,7 @@ public static class CitiesEndpoints
         app.MapGet("api/v1/cities", [Authorize] async (HttpContext httpContext, ApplicationDbContext db) =>
         {
             var cities = new List<City>();
-            if (httpContext.User.IsInRole(UserRole.RestaurantManager.ToString()))
-            {
-                cities = await db.Restaurants
-                    .Include(r => r.City)
-                    .Include(r => r.RestaurantManager)
-                    .Where(r => r.RestaurantManager.Id == httpContext.User.FindFirstValue(JwtRegisteredClaimNames.Sub))
-                    .GroupBy(r => r.City.CityId)
-                    .Select(g => g.First().City)
-                    .ToListAsync();
-            }
-            else
-            {
-                cities = await db.Cities.ToListAsync();
-            }
+            cities = await db.Cities.ToListAsync();
             return Results.Ok(cities);
         }).WithName("GetCities")
           .Produces<List<City>>(200)
