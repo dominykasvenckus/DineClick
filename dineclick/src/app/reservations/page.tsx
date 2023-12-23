@@ -55,7 +55,7 @@ export default function Reservations() {
                   <select
                     id="cities"
                     className="select select-bordered border-neutral dark:border-white w-full max-w-md text-sm md:text-base"
-                    defaultValue={""}
+                    defaultValue=""
                     onChange={(e) => setSelectedCityId(e.target.value)}
                   >
                     <option hidden value="">
@@ -154,7 +154,10 @@ export default function Reservations() {
                                         {restaurant.streetAddress}
                                         <br />
                                         Website URL:{" "}
-                                        <a href={restaurant.websiteUrl}>
+                                        <a
+                                          href={restaurant.websiteUrl}
+                                          className="hover:underline"
+                                        >
                                           {restaurant.websiteUrl}
                                         </a>
                                       </p>

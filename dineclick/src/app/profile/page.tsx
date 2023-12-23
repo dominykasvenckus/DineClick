@@ -101,7 +101,7 @@ export default function Profile() {
           setContent(
             <>
               {renderHeader(role)}
-              <div className="w-4/5 p-6 m-auto bg-white dark:bg-gray-700 rounded-md shadow-md ring-2 ring-gray-800/50 dark:ring-gray-300/50 md:max-w-lg my-16">
+              <div className="w-4/5 p-6 m-auto bg-white dark:bg-gray-700 rounded-md shadow-md ring-2 ring-gray-800/50 dark:ring-gray-300/50 md:max-w-lg my-12">
                 <h1 className="text-xl font-semibold text-center text-gray-700 dark:text-white">
                   Profile
                 </h1>

@@ -2,12 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
-import {
-  getDecodedAccessToken,
-  setAccessToken,
-  setRefreshToken,
-} from "../jwt-utils";
+import { setAccessToken, setRefreshToken } from "../jwt-utils";
 import { Error } from "../types";
+import Link from "next/link";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -40,22 +37,7 @@ export default function Login() {
         await response.json();
       setAccessToken(tokens.accessToken);
       setRefreshToken(tokens.refreshToken);
-
-      const decodedAccessToken = await getDecodedAccessToken();
-      const role =
-        decodedAccessToken?.[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ];
-
-      switch (role) {
-        case "RegisteredUser":
-        case "RestaurantManager":
-          router.push("/");
-          return;
-        case "Admin":
-          router.push("/");
-          return;
-      }
+      router.push("/");
     }
 
     if (response.status === 403) {
@@ -69,8 +51,8 @@ export default function Login() {
   };
 
   return (
-    <div className="relative flex flex-col justify-center h-screen overflow-hidden">
-      <div className="w-4/5 p-6 m-auto bg-white dark:bg-gray-700 rounded-md shadow-md ring-2 ring-gray-800/50 dark:ring-gray-300/50 md:max-w-lg">
+    <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+      <div className="w-4/5 p-6 m-auto bg-white dark:bg-gray-700 rounded-md shadow-md ring-2 ring-gray-800/50 dark:ring-gray-300/50 md:max-w-lg my-8">
         <h1 className="text-2xl md:text-3xl font-semibold text-center text-gray-700 dark:text-white">
           DineClick
         </h1>
@@ -108,7 +90,13 @@ export default function Login() {
               className="w-full input input-bordered text-sm md:text-base"
             />
           </div>
-          <div className="mt-8">
+          <Link
+            href="/register"
+            className="text-xs md:text-sm text-gray-700 dark:text-white hover:underline"
+          >
+            Don't have an account?
+          </Link>
+          <div className="mt-5">
             <button type="submit" className="btn btn-block">
               Login
             </button>
