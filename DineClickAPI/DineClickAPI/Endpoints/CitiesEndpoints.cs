@@ -13,7 +13,7 @@ public static class CitiesEndpoints
 {
     public static void AddCitiesEndpoints(this WebApplication app)
     {
-        app.MapGet("api/v1/cities", [Authorize] async (HttpContext httpContext, ApplicationDbContext db) =>
+        app.MapGet("api/v1/cities", [Authorize] async (ApplicationDbContext db) =>
         {
             var cities = new List<City>();
             cities = await db.Cities.ToListAsync();
@@ -76,7 +76,7 @@ public static class CitiesEndpoints
           .Produces(422)
           .WithOpenApi();
 
-        app.MapPut("api/v1/cities/{cityId:int}", [Authorize(Roles = nameof(UserRole.Admin))] async (HttpContext httpContext, ApplicationDbContext db, IMapper mapper, IValidator<CrupdateCityDto> validator, int cityId, [FromBody] CrupdateCityDto crupdateCityDto) =>
+        app.MapPut("api/v1/cities/{cityId:int}", [Authorize(Roles = nameof(UserRole.Admin))] async (ApplicationDbContext db, IMapper mapper, IValidator<CrupdateCityDto> validator, int cityId, [FromBody] CrupdateCityDto crupdateCityDto) =>
         {
             var city = await db.Cities.FirstOrDefaultAsync(c => c.CityId == cityId);
             if (city is null)
@@ -109,7 +109,7 @@ public static class CitiesEndpoints
           .Produces(422)
           .WithOpenApi();
 
-        app.MapDelete("api/v1/cities/{cityId:int}", [Authorize(Roles = nameof(UserRole.Admin))] async (HttpContext httpContext, ApplicationDbContext db, int cityId) =>
+        app.MapDelete("api/v1/cities/{cityId:int}", [Authorize(Roles = nameof(UserRole.Admin))] async (ApplicationDbContext db, int cityId) =>
         {
             var city = await db.Cities.FirstOrDefaultAsync(c => c.CityId == cityId);
             if (city is null)
